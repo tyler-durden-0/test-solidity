@@ -1,6 +1,9 @@
 "use client"
 import React, { useState, useEffect } from 'react';
+import { useRouter } from 'next/navigation'
 import { Contract, ethers } from 'ethers';
+import { onAuthStateChanged } from "firebase/auth";
+import {auth} from '../../utils/initFarebase';
 
 import treeAddress from '../../contracts/Tree-contract-address.json';
 import treeArtifact from '../../contracts/Tree.json';
@@ -15,6 +18,7 @@ declare global {
 }
 
 export default function TestTree() {
+    const router = useRouter();
     const [transaction, setTransaction] = useState('')
     const [index, setIndex] = useState(0)
     const [rootHash, setRootHash] = useState('')
@@ -26,6 +30,20 @@ export default function TestTree() {
     const [verifyButtonClicked, setVrifyButtonClicked] = useState(false);
 
     useEffect(() => {
+        onAuthStateChanged(auth, (user) => {
+            if (user) {
+              // User is signed in, see docs for a list of available properties
+              // https://firebase.google.com/docs/reference/js/auth.user
+              console.log('user in onAuthStateChanged', user);
+              const uid = user.uid;
+              // ...
+            } else {
+                console.log('we dont have current user')
+                router.push('/auth')
+              // User is signed out
+              // ...
+            }
+          });
         init()
     }, [])
 

@@ -1,6 +1,25 @@
+"use client"
+import React, {useEffect} from 'react';
 import Image from 'next/image'
+import {initFirebase, auth} from '../utils/initFarebase';
+import '../firebase-messaging-sw';
 
 export default function Home() {
+  useEffect(() => {
+    initFirebase();
+    console.log('auth', auth);
+    if ('serviceWorker' in navigator) {
+      navigator.serviceWorker.register('../firebase-messaging-sw.js')
+        .then((registration) => {
+          // Регистрация сервис-воркера выполнена успешно
+          console.log('Service Worker registered:', registration);
+        })
+        .catch((error) => {
+          // Ошибка регистрации сервис-воркера
+          console.error('Service Worker registration failed:', error);
+        });
+    } 
+  }, [])
   return (
     <main className="flex min-h-screen flex-col items-center justify-between p-24">
       <div className="z-10 max-w-5xl w-full items-center justify-between font-mono text-sm lg:flex">
