@@ -30,6 +30,14 @@ export default function TestTree() {
     const [verifyButtonClicked, setVrifyButtonClicked] = useState(false);
 
     useEffect(() => {
+        const init = async () => {
+          const { Alert, Input, initTE } = await import("tw-elements");
+          initTE({ Alert, Input });
+        };
+        init();
+      }, []);
+
+    useEffect(() => {
         onAuthStateChanged(auth, (user) => {
             if (user) {
               // User is signed in, see docs for a list of available properties
@@ -49,12 +57,6 @@ export default function TestTree() {
 
     const init = async () => {
         const provider = new ethers.providers.Web3Provider(window.ethereum)
-
-        // await provider.send("eth_requestAccounts", []);
-        // const provider2 = new ethers.providers.JsonRpcProvider();
-
-        // const signer2 = provider.getSigner()
-        // console.log('signer2', signer2)
 
         const [selectedAddress] = await window.ethereum.request({
             method: 'eth_requestAccounts',
@@ -116,57 +118,112 @@ export default function TestTree() {
 
     return(
         <>  {contractTree ? (
-            <div style={{display: 'flex', flexDirection: 'column', gap: '10px'}}>
-                <div>Test Merkel Tree</div>
-                <label>
-                    Transaction: 
-                    <input         
+            <div className='flex flex-col gap-5 px-4 py-4'>
+                <div className='text-center text-xl font-bold bg-black text-white p-6 mb-6'>Test Merkel Tree</div>
+                <div className="relative mb-3" data-te-input-wrapper-init>
+                    <input
                         type="text"
-                        id="message"
-                        name="message"
+                        className="peer block min-h-[auto] w-full rounded border-0 bg-transparent px-3 py-[0.32rem] leading-[1.6] outline-none transition-all duration-200 ease-linear focus:placeholder:opacity-100 peer-focus:text-primary data-[te-input-state-active]:placeholder:opacity-100 motion-reduce:transition-none dark:text-neutral-200 dark:placeholder:text-neutral-200 dark:peer-focus:text-primary [&:not([data-te-input-placeholder-active])]:placeholder:opacity-0"
+                        id="exampleFormControlInputText"
+                        placeholder="Example label"
                         onChange={handleTransaction}
-                        value={transaction}/>
-                </label>
-                <label>
-                    index: 
-                    <input         
+                        value={transaction}
+                        />
+                    <label
+                        htmlFor="exampleFormControlInputText"
+                        className="pointer-events-none absolute left-3 top-0 mb-0 max-w-[90%] origin-[0_0] truncate pt-[0.37rem] leading-[1.6] text-neutral-500 transition-all duration-200 ease-out peer-focus:-translate-y-[0.9rem] peer-focus:scale-[0.8] peer-focus:text-primary peer-data-[te-input-state-active]:-translate-y-[0.9rem] peer-data-[te-input-state-active]:scale-[0.8] motion-reduce:transition-none dark:text-neutral-200 dark:peer-focus:text-primary"
+                        >Transaction
+                    </label>
+                </div>
+                <div className="relative mb-3" data-te-input-wrapper-init>
+                    <input
                         type="number"
-                        id="message"
-                        name="message"
+                        className="peer block min-h-[auto] w-full rounded border-0 bg-transparent px-3 py-[0.32rem] leading-[1.6] outline-none transition-all duration-200 ease-linear focus:placeholder:opacity-100 peer-focus:text-primary data-[te-input-state-active]:placeholder:opacity-100 motion-reduce:transition-none dark:text-neutral-200 dark:placeholder:text-neutral-200 dark:peer-focus:text-primary [&:not([data-te-input-placeholder-active])]:placeholder:opacity-0"
+                        id="exampleFormControlInputNumber"
+                        placeholder="Example label"
                         onChange={handleIndex}
-                        value={index}/>
-                </label>
-                <button onClick={handleHashes}>Hashes</button>
+                        value={index}
+                        />
+                    <label
+                        htmlFor="exampleFormControlInputNumber"
+                        className="pointer-events-none absolute left-3 top-0 mb-0 max-w-[90%] origin-[0_0] truncate pt-[0.37rem] leading-[1.6] text-neutral-500 transition-all duration-200 ease-out peer-focus:-translate-y-[0.9rem] peer-focus:scale-[0.8] peer-focus:text-primary peer-data-[te-input-state-active]:-translate-y-[0.9rem] peer-data-[te-input-state-active]:scale-[0.8] motion-reduce:transition-none dark:text-neutral-200 dark:peer-focus:text-primary"
+                        >Index
+                    </label>
+                </div>
+                <button
+                    type="button"
+                    className="inline-block rounded bg-primary-100 px-6 pb-2 pt-2.5 text-xs font-medium uppercase leading-normal text-primary-700 transition duration-150 ease-in-out hover:bg-primary-accent-100 focus:bg-primary-accent-100 focus:outline-none focus:ring-0 active:bg-primary-accent-200"
+                    onClick={handleHashes}
+                    >
+                        Hashes
+                </button>
                 {outputHash ? `Output hash: ${outputHash}` : ''}
-                <label>
-                    rootHash: 
-                    <input         
+                <div className="relative mb-3" data-te-input-wrapper-init>
+                    <input
                         type="text"
-                        id="message"
-                        name="message"
+                        className="peer block min-h-[auto] w-full rounded border-0 bg-transparent px-3 py-[0.32rem] leading-[1.6] outline-none transition-all duration-200 ease-linear focus:placeholder:opacity-100 peer-focus:text-primary data-[te-input-state-active]:placeholder:opacity-100 motion-reduce:transition-none dark:text-neutral-200 dark:placeholder:text-neutral-200 dark:peer-focus:text-primary [&:not([data-te-input-placeholder-active])]:placeholder:opacity-0"
+                        id="exampleFormControlInputText"
+                        placeholder="Example label"
                         onChange={handleRootHash}
-                        value={rootHash}/>
-                </label>
-                <label>
-                    proof1: 
-                    <input         
+                        value={rootHash}
+                        />
+                    <label
+                        htmlFor="exampleFormControlInputText"
+                        className="pointer-events-none absolute left-3 top-0 mb-0 max-w-[90%] origin-[0_0] truncate pt-[0.37rem] leading-[1.6] text-neutral-500 transition-all duration-200 ease-out peer-focus:-translate-y-[0.9rem] peer-focus:scale-[0.8] peer-focus:text-primary peer-data-[te-input-state-active]:-translate-y-[0.9rem] peer-data-[te-input-state-active]:scale-[0.8] motion-reduce:transition-none dark:text-neutral-200 dark:peer-focus:text-primary"
+                        >Root Hash
+                    </label>
+                </div>
+                <div className="relative mb-3" data-te-input-wrapper-init>
+                    <input
                         type="text"
-                        id="message"
-                        name="message"
+                        className="peer block min-h-[auto] w-full rounded border-0 bg-transparent px-3 py-[0.32rem] leading-[1.6] outline-none transition-all duration-200 ease-linear focus:placeholder:opacity-100 peer-focus:text-primary data-[te-input-state-active]:placeholder:opacity-100 motion-reduce:transition-none dark:text-neutral-200 dark:placeholder:text-neutral-200 dark:peer-focus:text-primary [&:not([data-te-input-placeholder-active])]:placeholder:opacity-0"
+                        id="exampleFormControlInputText"
+                        placeholder="Example label"
                         onChange={handleProof1}
-                        value={proof1}/>
-                </label>
-                <label>
-                    proof2: 
-                    <input         
+                        value={proof1}
+                        />
+                    <label
+                        htmlFor="exampleFormControlInputText"
+                        className="pointer-events-none absolute left-3 top-0 mb-0 max-w-[90%] origin-[0_0] truncate pt-[0.37rem] leading-[1.6] text-neutral-500 transition-all duration-200 ease-out peer-focus:-translate-y-[0.9rem] peer-focus:scale-[0.8] peer-focus:text-primary peer-data-[te-input-state-active]:-translate-y-[0.9rem] peer-data-[te-input-state-active]:scale-[0.8] motion-reduce:transition-none dark:text-neutral-200 dark:peer-focus:text-primary"
+                        >Proof 1
+                    </label>
+                </div>
+                <div className="relative mb-3" data-te-input-wrapper-init>
+                    <input
                         type="text"
-                        id="message"
-                        name="message"
+                        className="peer block min-h-[auto] w-full rounded border-0 bg-transparent px-3 py-[0.32rem] leading-[1.6] outline-none transition-all duration-200 ease-linear focus:placeholder:opacity-100 peer-focus:text-primary data-[te-input-state-active]:placeholder:opacity-100 motion-reduce:transition-none dark:text-neutral-200 dark:placeholder:text-neutral-200 dark:peer-focus:text-primary [&:not([data-te-input-placeholder-active])]:placeholder:opacity-0"
+                        id="exampleFormControlInputText"
+                        placeholder="Example label"
                         onChange={handleProof2}
-                        value={proof2}/>
-                </label>
-                <button onClick={handleClick}>Verify</button>
-                {verify ? `Result: ${verify}` : verifyButtonClicked ? `Result: ${verify}` : ``}
+                        value={proof2}
+                        />
+                    <label
+                        htmlFor="exampleFormControlInputText"
+                        className="pointer-events-none absolute left-3 top-0 mb-0 max-w-[90%] origin-[0_0] truncate pt-[0.37rem] leading-[1.6] text-neutral-500 transition-all duration-200 ease-out peer-focus:-translate-y-[0.9rem] peer-focus:scale-[0.8] peer-focus:text-primary peer-data-[te-input-state-active]:-translate-y-[0.9rem] peer-data-[te-input-state-active]:scale-[0.8] motion-reduce:transition-none dark:text-neutral-200 dark:peer-focus:text-primary"
+                        >Proof 2
+                    </label>
+                </div>
+                <button
+                    type="button"
+                    data-te-ripple-init
+                    data-te-ripple-color="light"
+                    onClick={handleClick}
+                    className="inline-block rounded bg-primary px-6 pb-2 pt-2.5 text-xs font-medium uppercase leading-normal text-white shadow-[0_4px_9px_-4px_#3b71ca] transition duration-150 ease-in-out hover:bg-primary-600 hover:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.3),0_4px_18px_0_rgba(59,113,202,0.2)] focus:bg-primary-600 focus:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.3),0_4px_18px_0_rgba(59,113,202,0.2)] focus:outline-none focus:ring-0 active:bg-primary-700 active:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.3),0_4px_18px_0_rgba(59,113,202,0.2)] dark:shadow-[0_4px_9px_-4px_rgba(59,113,202,0.5)] dark:hover:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.2),0_4px_18px_0_rgba(59,113,202,0.1)] dark:focus:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.2),0_4px_18px_0_rgba(59,113,202,0.1)] dark:active:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.2),0_4px_18px_0_rgba(59,113,202,0.1)]">
+                        Verify
+                </button>
+                {verify ? 
+                    <div
+                        className="mb-4 rounded-lg bg-primary-100 px-6 py-5 text-base text-primary-600"
+                        role="alert">
+                            Result: {verify}
+                    </div>
+                 : verifyButtonClicked ? 
+                    <div
+                        className="mb-4 rounded-lg bg-primary-100 px-6 py-5 text-base text-primary-600"
+                        role="alert">
+                            Result: {verify}
+                    </div>
+                 : ``}
             </div>
 
             ) : <div>loading</div>}

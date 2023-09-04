@@ -4,6 +4,7 @@ import Image from 'next/image'
 import {initFirebase, auth} from '../utils/initFarebase';
 import '../firebase-messaging-sw';
 
+
 export default function Home() {
   useEffect(() => {
     initFirebase();

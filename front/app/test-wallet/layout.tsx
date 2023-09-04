@@ -1,4 +1,3 @@
-import styles from './styles.module.css';
 
 export default function TestLayout({
   children,
@@ -6,6 +5,6 @@ export default function TestLayout({
   children: React.ReactNode
 }) {
   return (
-      <div className={styles.main}>{children}</div>
+      <div>{children}</div>
   )
 }
